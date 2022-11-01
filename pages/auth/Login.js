@@ -2,10 +2,14 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 // Icons
 import { FcGoogle } from "react-icons/fc";
-import { AiFillFacebook } from "react-icons/ai";
+import { FaGithub } from "react-icons/fa";
 
 // Firebase imports
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  GithubAuthProvider,
+} from "firebase/auth";
 
 import { auth } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -20,6 +24,18 @@ const Login = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       route.push("/Dashboard");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Sign in with github
+  const githubProvider = new GithubAuthProvider();
+  const githubLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, githubProvider);
+      route.push("/Dashboard");
+      console.log(result);
     } catch (error) {
       console.log(error);
     }
@@ -47,6 +63,14 @@ const Login = () => {
           >
             <FcGoogle className=" text-2xl" />
             Sign in with Google
+          </button>
+
+          <button
+            onClick={githubLogin}
+            className="text-white font-medium bg-gray-700 w-full rounded-lg flex items-center p-4 gap-4"
+          >
+            <FaGithub className=" text-2xl" />
+            Sign in with Github
           </button>
         </div>
       </div>
